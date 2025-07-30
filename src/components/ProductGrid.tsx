@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ShoppingCart, MessageCircle, Star, Eye, Heart, Zap, Award, Plus } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { useToast } from "@/components/ui/use-toast";
+import { useNavigate } from "react-router-dom";
 
 const products = [
   {
@@ -91,6 +92,7 @@ interface ProductGridProps {
 const ProductGrid = ({ selectedCategory }: ProductGridProps) => {
   const { addToCart } = useCart();
   const { toast } = useToast();
+  const navigate = useNavigate();
   
   const handleAddToCart = (product: any) => {
     addToCart({
@@ -193,7 +195,10 @@ const ProductGrid = ({ selectedCategory }: ProductGridProps) => {
               )}
 
               {/* Product Image */}
-              <div className="relative overflow-hidden group/image">
+              <div 
+                className="relative overflow-hidden group/image cursor-pointer"
+                onClick={() => navigate(`/product/${product.id}`)}
+              >
                 <img
                   src={product.image}
                   alt={product.name}
@@ -207,9 +212,24 @@ const ProductGrid = ({ selectedCategory }: ProductGridProps) => {
                   <Button variant="glass" size="icon" className="rounded-full hover:shadow-glow">
                     <Heart className="w-4 h-4" />
                   </Button>
-                  <Button variant="glass" size="icon" className="rounded-full hover:shadow-glow">
+                  <Button 
+                    variant="glass" 
+                    size="icon" 
+                    className="rounded-full hover:shadow-glow"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/product/${product.id}`);
+                    }}
+                  >
                     <Eye className="w-4 h-4" />
                   </Button>
+                </div>
+
+                {/* Click to view overlay */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20 backdrop-blur-sm">
+                  <div className="bg-premium-gold/20 border border-premium-gold/40 rounded-lg px-4 py-2 text-white font-medium text-sm animate-pulse-glow">
+                    Click to view details
+                  </div>
                 </div>
               </div>
 
@@ -235,7 +255,10 @@ const ProductGrid = ({ selectedCategory }: ProductGridProps) => {
                 </div>
 
                 {/* Product Name */}
-                <h3 className="font-bold text-xl text-white font-poppins group-hover:text-premium-gold transition-colors duration-300">
+                <h3 
+                  className="font-bold text-xl text-white font-poppins group-hover:text-premium-gold transition-colors duration-300 cursor-pointer"
+                  onClick={() => navigate(`/product/${product.id}`)}
+                >
                   {product.name}
                 </h3>
 
