@@ -22,61 +22,63 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative h-screen min-h-[1200px] overflow-hidden flex items-center pt-20 md:pt-0">
-      {/* Animated LED Grid Background */}
+    <section className="relative h-screen min-h-[100vh] overflow-hidden flex items-center pt-20 md:pt-0">
+      {/* Video Background */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-black via-primary/20 to-black"></div>
+        <video 
+          autoPlay 
+          muted 
+          loop 
+          playsInline
+          className="w-full h-full object-cover"
+          style={{ filter: 'brightness(0.4) contrast(1.2)' }}
+        >
+          <source src="/videos/city-background.mp4" type="video/mp4" />
+        </video>
+        
+        {/* RGB Glow Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-transparent to-black/60"></div>
+        <div className="absolute inset-0 bg-gradient-radial from-transparent via-[rgb(255,0,150)]/10 to-transparent animate-pulse"></div>
+      </div>
 
-        {/* LED Grid Pattern */}
-        <div className="absolute inset-0 opacity-30">
-          <div className="grid grid-cols-12 gap-2 h-full w-full p-4">
-            {Array.from({ length: 144 }).map((_, i) => (
-              <div
-                key={i}
-                className="bg-premium-gold/20 rounded-sm animate-pulse"
-                style={{
-                  animationDelay: `${Math.random() * 3}s`,
-                  animationDuration: `${1 + Math.random() * 2}s`
-                }}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Dynamic Lightning Effects */}
-        <div className="absolute inset-0">
-          <div className="absolute top-1/4 left-1/4 w-px h-32 bg-premium-gold animate-lightning opacity-60"></div>
-          <div className="absolute top-3/4 right-1/3 w-px h-24 bg-premium-blue animate-lightning opacity-40" style={{ animationDelay: '1s' }}></div>
-          <div className="absolute bottom-1/3 left-1/2 w-px h-40 bg-premium-gold animate-lightning opacity-50" style={{ animationDelay: '2s' }}></div>
-        </div>
-
-        {/* Scanning Lines */}
-        <div className="absolute inset-0">
-          <div className="absolute w-full h-px bg-gradient-to-r from-transparent via-premium-gold to-transparent animate-slide-down opacity-60"></div>
-          <div className="absolute w-full h-px bg-gradient-to-r from-transparent via-premium-blue to-transparent animate-slide-down opacity-40" style={{ animationDelay: '1.5s' }}></div>
-        </div>
-
-        {/* Floating Circuit Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-20 left-20 w-3 h-3 border border-premium-gold rounded animate-rotate-slow opacity-70"></div>
-          <div className="absolute top-40 right-32 w-2 h-2 bg-premium-blue rounded-full animate-pulse-glow"></div>
-          <div className="absolute bottom-32 left-1/3 w-4 h-4 border-2 border-premium-gold rotate-45 animate-float opacity-80"></div>
-          <div className="absolute top-1/3 right-20 w-2 h-2 bg-premium-gold rounded animate-neon-pulse"></div>
-
-          {/* Moving particles */}
-          {Array.from({ length: 20 }).map((_, i) => (
+      {/* Optimized LED Grid - Reduced for mobile performance */}
+      <div className="absolute inset-0 opacity-20 md:opacity-30">
+        <div className="grid grid-cols-8 md:grid-cols-12 gap-2 h-full w-full p-4">
+          {Array.from({ length: window.innerWidth < 768 ? 64 : 96 }).map((_, i) => (
             <div
               key={i}
-              className="absolute w-1 h-1 bg-premium-gold rounded-full animate-float opacity-60"
+              className="bg-[rgb(255,215,0)]/30 rounded-sm animate-pulse will-change-opacity"
               style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 5}s`,
-                animationDuration: `${3 + Math.random() * 4}s`
+                animationDelay: `${(i % 8) * 0.5}s`,
+                animationDuration: '2s'
               }}
             />
           ))}
         </div>
+      </div>
+
+      {/* Minimal Lightning Effects - Mobile Optimized */}
+      <div className="absolute inset-0 hidden md:block">
+        <div className="absolute top-1/4 left-1/4 w-px h-16 bg-[rgb(255,215,0)] animate-lightning opacity-60"></div>
+        <div className="absolute bottom-1/3 right-1/3 w-px h-20 bg-[rgb(0,255,255)] animate-lightning opacity-50" style={{ animationDelay: '1s' }}></div>
+      </div>
+
+      {/* RGB Glow Particles */}
+      <div className="absolute inset-0 overflow-hidden">
+        {Array.from({ length: window.innerWidth < 768 ? 8 : 15 }).map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-1 h-1 rounded-full animate-float will-change-transform"
+            style={{
+              backgroundColor: `rgb(${255 - i * 15}, ${100 + i * 10}, ${200 - i * 8})`,
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${i * 0.5}s`,
+              animationDuration: '4s',
+              filter: `drop-shadow(0 0 4px rgb(${255 - i * 15}, ${100 + i * 10}, ${200 - i * 8}))`
+            }}
+          />
+        ))}
       </div>
 
       {/* Content */}

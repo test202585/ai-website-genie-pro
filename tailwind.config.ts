@@ -143,10 +143,16 @@ export default {
 				},
 				'float': {
 					'0%, 100%': {
-						transform: 'translateY(0px)'
+						transform: 'translateY(0px) translateX(0px)'
+					},
+					'25%': {
+						transform: 'translateY(-5px) translateX(2px)'
 					},
 					'50%': {
-						transform: 'translateY(-10px)'
+						transform: 'translateY(-8px) translateX(-2px)'
+					},
+					'75%': {
+						transform: 'translateY(-3px) translateX(1px)'
 					}
 				},
 				'glow': {
@@ -276,7 +282,8 @@ export default {
 				'gradient-premium': 'var(--gradient-premium)',
 				'gradient-glass': 'var(--gradient-glass)',
 				'gradient-card': 'var(--gradient-card)',
-				'gradient-hero': 'var(--gradient-hero)'
+				'gradient-hero': 'var(--gradient-hero)',
+				'gradient-radial': 'radial-gradient(ellipse at center, var(--tw-gradient-stops))'
 			}
 		}
 	},
