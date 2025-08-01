@@ -127,6 +127,8 @@ All colors MUST be HSL.
   html {
     scroll-behavior: smooth;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   body {
@@ -134,10 +136,20 @@ All colors MUST be HSL.
     background: radial-gradient(ellipse at top, hsl(228 45% 8% / 0.3) 0%, hsl(0 0% 2%) 50%, hsl(0 0% 1%) 100%);
     min-height: 100vh;
     overflow-x: hidden;
-    /* Optimize for mobile performance */
+    /* Optimize for smooth performance */
     -webkit-overflow-scrolling: touch;
-    transform: translateZ(0);
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
     will-change: scroll-position;
+  }
+
+  /* Optimize animations for performance */
+  *,
+  *::before,
+  *::after {
+    will-change: auto;
+    transform: translateZ(0);
   }
 
   body::before {
@@ -155,7 +167,7 @@ All colors MUST be HSL.
     z-index: -1;
   }
 
-  /* Animated particles */
+  /* Reduced animated particles for better performance */
   body::after {
     content: '';
     position: fixed;
@@ -164,22 +176,22 @@ All colors MUST be HSL.
     right: 0;
     bottom: 0;
     background-image: 
-      radial-gradient(2px 2px at 20px 30px, hsl(43 96% 56% / 0.3), transparent),
-      radial-gradient(2px 2px at 40px 70px, hsl(228 75% 55% / 0.3), transparent),
-      radial-gradient(1px 1px at 90px 40px, hsl(142 76% 36% / 0.3), transparent),
-      radial-gradient(1px 1px at 130px 80px, hsl(43 96% 56% / 0.3), transparent);
+      radial-gradient(1px 1px at 20px 30px, hsl(43 96% 56% / 0.2), transparent),
+      radial-gradient(1px 1px at 40px 70px, hsl(228 75% 55% / 0.2), transparent);
     background-repeat: repeat;
-    background-size: 200px 200px;
-    animation: float 20s infinite linear;
+    background-size: 400px 400px;
+    animation: float 30s infinite linear;
     pointer-events: none;
     z-index: -1;
+    opacity: 0.5;
   }
 
   @keyframes float {
-    0% { transform: translateY(0px) rotate(0deg); }
-    33% { transform: translateY(-10px) rotate(120deg); }
-    66% { transform: translateY(10px) rotate(240deg); }
-    100% { transform: translateY(0px) rotate(360deg); }
+    0% { transform: translate3d(0, 0, 0) rotate(0deg); }
+    25% { transform: translate3d(-5px, -5px, 0) rotate(90deg); }
+    50% { transform: translate3d(5px, -10px, 0) rotate(180deg); }
+    75% { transform: translate3d(-5px, 5px, 0) rotate(270deg); }
+    100% { transform: translate3d(0, 0, 0) rotate(360deg); }
   }
 }
 
@@ -239,5 +251,31 @@ All colors MUST be HSL.
   @keyframes holographic-shift {
     0%, 100% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
+  }
+
+  /* Performance optimization classes */
+  .smooth-scroll {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .gpu-accelerated {
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+
+  .reduce-motion {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
