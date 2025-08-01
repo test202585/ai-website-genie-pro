@@ -119,12 +119,25 @@ All colors MUST be HSL.
 @layer base {
   * {
     @apply border-border;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
   }
 
   body {
     @apply bg-background text-foreground;
     background: radial-gradient(ellipse at top, hsl(228 45% 8% / 0.3) 0%, hsl(0 0% 2%) 50%, hsl(0 0% 1%) 100%);
     min-height: 100vh;
+    overflow-x: hidden;
+    /* Optimize for mobile performance */
+    -webkit-overflow-scrolling: touch;
+    transform: translateZ(0);
+    will-change: scroll-position;
   }
 
   body::before {
